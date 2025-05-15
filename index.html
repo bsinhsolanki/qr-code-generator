@@ -35,26 +35,37 @@
             background: white;
             padding: 5px;
         }
+        .qr-link {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+            color: #0066cc;
+            text-decoration: none;
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
 
     <div class="page">
-        <h2>QR Code Link 1</h2>
+        <h2>QR Code 1</h2>
+        <a href="https://otoserve.in/partner-with-us" class="qr-link" target="_blank">https://otoserve.in/partner-with-us</a>
         <div class="qr-container" id="qr1">
             <img class="qr-logo" src="img/LOGO.png" alt="Logo">
         </div>
     </div>
 
     <div class="page">
-        <h2>QR Code Link 2</h2>
+        <h2>QR Code 2</h2>
+        <a href="https://otoserve.in/" class="qr-link" target="_blank">https://otoserve.in/</a>
         <div class="qr-container" id="qr2">
             <img class="qr-logo" src="img/LOGO.png" alt="Logo">
         </div>
     </div>
 
     <div class="page">
-        <h2>QR Code Link 3</h2>
+        <h2>QR Code 3</h2>
+        <a href="https://play.google.com/store/apps/details?id=com.oto.oto_serve" class="qr-link" target="_blank">https://play.google.com/store/apps/details?id=com.oto.oto_serve</a>
         <div class="qr-container" id="qr3">
             <img class="qr-logo" src="img/LOGO.png" alt="Logo">
         </div>
@@ -62,7 +73,6 @@
 
     <script src="js/qrcode.min.js"></script>
     <script>
-        // Generate 3 QR codes with different links
         const links = [
             "https://otoserve.in/partner-with-us",
             "https://otoserve.in/",
