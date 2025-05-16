@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>QR Code Pages with Logo</title>
+    <title>QR Code with Logo Download</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
             padding: 20px;
             background: #f4f4f4;
         }
@@ -34,6 +33,7 @@
             border-radius: 8px;
             background: white;
             padding: 5px;
+            box-sizing: border-box;
         }
         .qr-link {
             font-size: 16px;
@@ -74,40 +74,14 @@
         <button onclick="downloadJPEG('qr3', 'qr3.jpg')">Download JPEG</button>
     </div>
 
+    <!-- QR Code Generator -->
     <script src="js/qrcode.min.js"></script>
-    <script>
-    function downloadJPEG(containerId, filename) {
-    const container = document.getElementById(containerId);
-    const logoImg = container.querySelector("img.qr-logo");
 
-    if (!logoImg.complete) {
-        alert("Logo is still loading. Please wait a moment and try again.");
-        return;
-    }
-
-    html2canvas(container, { backgroundColor: "#ffffff" }).then(canvas => {
-        const jpegData = canvas.toDataURL("image/jpeg", 1.0);
-        const link = document.createElement("a");
-        link.href = jpegData;
-        link.download = filename;
-
-        // Mobile-safe click trigger
-        if (typeof link.download !== 'undefined') {
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } else {
-            window.open(jpegData, '_blank');
-        }
-    }).catch(err => {
-        console.error("Download failed:", err);
-        alert("Unable to generate image.");
-    });
-}
-
-   </script>
+    <!-- html2canvas for screenshot capture -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
+        // Generate QR codes
         const links = [
             "https://otoserve.in/partner-with-us",
             "https://otoserve.in/",
@@ -126,6 +100,43 @@
                 correctLevel: QRCode.CorrectLevel.H
             });
         }
+
+        // Download function with logo check
+        function downloadJPEG(containerId, filename) {
+            const container = document.getElementById(containerId);
+            const logoImg = container.querySelector("img.qr-logo");
+
+            if (!logoImg.complete) {
+                // Retry once image loads
+                logoImg.onload = () => {
+                    downloadJPEG(containerId, filename);
+                };
+                alert("Logo is still loading. The download will start automatically when ready.");
+                return;
+            }
+
+            html2canvas(container, {
+                backgroundColor: "#ffffff" // ensure white background
+            }).then(canvas => {
+                const jpegData = canvas.toDataURL("image/jpeg", 1.0);
+                const link = document.createElement("a");
+                link.href = jpegData;
+                link.download = filename;
+
+                // For mobile browsers fallback
+                if (typeof link.download !== 'undefined') {
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    window.open(jpegData, '_blank');
+                }
+            }).catch(err => {
+                console.error("Download failed:", err);
+                alert("Unable to generate image.");
+            });
+        }
     </script>
+
 </body>
 </html>
