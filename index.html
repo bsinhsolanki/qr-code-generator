@@ -77,22 +77,35 @@
     <script src="js/qrcode.min.js"></script>
     <script>
     function downloadJPEG(containerId, filename) {
-        const container = document.getElementById(containerId);
-        const canvas = container.querySelector("canvas");
-        if (!canvas) {
-            alert("QR code not generated yet.");
-            return;
-        }
+    const container = document.getElementById(containerId);
+    const logoImg = container.querySelector("img.qr-logo");
 
+    if (!logoImg.complete) {
+        alert("Logo is still loading. Please wait a moment and try again.");
+        return;
+    }
+
+    html2canvas(container, { backgroundColor: "#ffffff" }).then(canvas => {
         const jpegData = canvas.toDataURL("image/jpeg", 1.0);
         const link = document.createElement("a");
         link.href = jpegData;
         link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-</script>
+
+        // Mobile-safe click trigger
+        if (typeof link.download !== 'undefined') {
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            window.open(jpegData, '_blank');
+        }
+    }).catch(err => {
+        console.error("Download failed:", err);
+        alert("Unable to generate image.");
+    });
+}
+
+   </script>
 
     <script>
         const links = [
